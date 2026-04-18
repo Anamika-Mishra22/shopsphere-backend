@@ -1,5 +1,5 @@
 const Order = require("../models/OrderModel");
-
+const { v4: uuidv4 } = require("uuid");
 // Create a new order
 exports.createOrder = async (req, res) => {
   try {
@@ -15,9 +15,12 @@ exports.createOrder = async (req, res) => {
     }
 
     // Create new order
-    const order = new Order(orderData);
-    await order.save();
+  const order = new Order({
+  ...req.body,
+  id: uuidv4()  
+});
 
+await order.save();
     res.status(201).json({
       success: true,
       message: "Order created successfully",
